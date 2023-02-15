@@ -1,0 +1,45 @@
+.registerContainer {
+  width: 300px;
+  height: 250px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.logo {
+  color: gold;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.registerBtn {
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: gold;
+  color: white;
+}
+
+.success {
+  color: green;
+  font-size: 12px;
+  text-align: center;
+}
+
+.failure {
+  color: red;
+  font-size: 12px;
+  text-align: center;
+}
