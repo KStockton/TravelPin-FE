@@ -18,6 +18,8 @@ function App() {
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
+  const [showRegister, setShowRegister] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const [viewState, setViewState] = useState({
     longitude: -117,
     latitude: 32.597,
@@ -49,6 +51,8 @@ function App() {
     const {lng, lat} = e.lngLat;
     setNewPlace({long: lng, lat});
   },[]);
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -147,7 +151,7 @@ function App() {
               <label>Rating</label>
               <select               
               onChange={(e) => setRating(e.target.value)}
->
+              >
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -167,12 +171,12 @@ function App() {
       <button className="button logout">Log Out</button>) 
         : (
         <div className='buttons'>
-          <button className="button login">Login</button>
-          <button className="button register">Register</button>
+          <button className="button login" onClick={() => setShowLogin(true)}>Login</button>
+          <button className="button register" onClick={() => setShowRegister(true)}>Register</button>
         </div>)
         }
-      
-      <Register onSetCurrentUser={setCurrentUser}/>
+      {showRegister && (<Register onSetCurrentUser={setCurrentUser} setShowRegister={setShowRegister}/>)}
+      {showLogin && <div>v</div>}
     </Map>
   );
 }

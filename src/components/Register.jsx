@@ -1,9 +1,9 @@
 import './register.css';
 import React, { useState, useRef } from 'react';
-import { Room } from '@mui/icons-material';
+import { Room, Cancel } from '@mui/icons-material';
 import axios from 'axios';
 
-export default function Register() {
+export default function Register({setShowRegister}) {
   const [ success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const nameRef = useRef(null)
@@ -49,6 +49,7 @@ export default function Register() {
         <span className='failure'> Opps Sorry</span>
         )}
       </form>
+      <Cancel className='registerCancel' onClick={() => setShowRegister(false)}/>
     </div>
   );
 }
