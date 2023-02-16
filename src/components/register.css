@@ -17,7 +17,7 @@
 }
 
 .logo {
-  color: gold;
+  color: slateblue;
   display: flex;
   align-items: center;
   font-weight: 700;
@@ -28,8 +28,9 @@
   border: none;
   padding: 5px;
   border-radius: 5px;
-  background-color: gold;
+  background-color: slateblue;
   color: white;
+  cursor: pointer;
 }
 
 .success {

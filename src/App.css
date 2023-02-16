@@ -70,6 +70,12 @@ select {
   color: white;
 }
 
+.button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  pointer-events: none;
+}
+
 .logout {
   background-color: tomato;
   position: absolute;
@@ -78,15 +84,17 @@ select {
 }
 
 .login {
-  background-color: teal;
+  background-color: green;
   margin-right: 5px;
+  cursor: pointer;
 }
 
 .register {
   background-color: slateblue;
+  cursor: pointer;
 }
 
-.buttons, .logout .login{
+.buttons, .logout .login {
   position: absolute;
   top: 10px;
   right: 50px;

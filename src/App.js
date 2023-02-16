@@ -12,9 +12,11 @@ import { format } from "timeago.js";
 import StarIcon from "@mui/icons-material/Star";
 import RoomIcon from "@mui/icons-material/Room";
 import Register from "./components/Register";
+import Login from './components/Login';
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const loginTravelAppStorage = window.localStorage;
+  const [currentUser, setCurrentUser] = useState(loginTravelAppStorage.getItem('user') || null);
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
@@ -40,17 +42,24 @@ function App() {
       }
     };
     getPins();
-  }, []);
+  }, [setPins]);
 
   const handleMarkerClick = useCallback((id, lat, lng) => {
     setCurrentPlaceId(id);
     setViewState({...viewState, latitude: lat, longitude: lng})
-  },[])
+  },[setCurrentPlaceId, setViewState])
 
-  const handleAddClick = React.useCallback((e) => {
+  const handleAddClick = useCallback((e) => {
+    if(!currentUser){
+
+      setShowLogin(true);
+      return 
+    }
+
+    setShowLogin(false)
     const {lng, lat} = e.lngLat;
     setNewPlace({long: lng, lat});
-  },[]);
+  },[currentUser, setShowLogin, setNewPlace]);
 
 
 
@@ -75,6 +84,11 @@ function App() {
     
   }
 
+  const handleLogout = useCallback(() => {
+    loginTravelAppStorage.removeItem('users');
+    setCurrentUser(null);
+  },[]);
+
   return (
     <Map
       ref={mapRef}
@@ -98,7 +112,7 @@ function App() {
             anchor="top"
             draggable={true}
           >
-            <RoomIcon onClick={() => handleMarkerClick(p._id, p.lat, p.long)} />
+            <RoomIcon onClick={() => handleMarkerClick(p._id, p.lat, p.long)} style={{color: 'slateblue'}}/>
           </Marker>
           {p._id === currentPlaceId && (
             <Popup
@@ -167,16 +181,27 @@ function App() {
       )}
       <NavigationControl position="top-right" />
       <FullscreenControl />
-      {currentUser ? (
-      <button className="button logout">Log Out</button>) 
+      { currentUser ? (
+      <button className="button logout" onClick={handleLogout}>Log Out</button>) 
         : (
         <div className='buttons'>
-          <button className="button login" onClick={() => setShowLogin(true)}>Login</button>
-          <button className="button register" onClick={() => setShowRegister(true)}>Register</button>
+          <button className="button login" disabled={showRegister} onClick={() => setShowLogin(true)}>Login</button>
+          <button className="button register" disabled={showLogin} onClick={() => setShowRegister(true)}>Register</button>
         </div>)
         }
-      {showRegister && (<Register onSetCurrentUser={setCurrentUser} setShowRegister={setShowRegister}/>)}
-      {showLogin && <div>v</div>}
+      { showRegister &&
+        <Register  
+        setShowRegister={setShowRegister}
+        onSetCurrentUser={setCurrentUser}
+        loginTravelAppStorage={loginTravelAppStorage}
+      />
+      }
+      { showLogin  && <Login 
+        setShowLogin={setShowLogin} 
+        loginTravelAppStorage={loginTravelAppStorage}
+        onSetCurrentUser={setCurrentUser}
+      />
+      }
     </Map>
   );
 }

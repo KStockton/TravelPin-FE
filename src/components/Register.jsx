@@ -1,9 +1,10 @@
-import './register.css';
 import React, { useState, useRef } from 'react';
-import { Room, Cancel } from '@mui/icons-material';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import { Room, Cancel } from '@mui/icons-material';
+import './register.css';
 
-export default function Register({setShowRegister}) {
+export default function Register({ setShowRegister, onSetCurrentUser, loginTravelAppStorage }) {
   const [ success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const nameRef = useRef(null)
@@ -22,10 +23,12 @@ export default function Register({setShowRegister}) {
     setSuccess(true);
 
     try {
-     const res = await axios.post('/users/register', newUser);
+      await axios.post('/users/register', newUser);
+      loginTravelAppStorage.setItem("users", nameRef.current.value);
+      onSetCurrentUser(nameRef.current.value)
       setSuccess(true)
-      console.log(res)
       setError(false)
+
     } catch(err) {
       console.log(err)
       setError(true)
@@ -35,7 +38,7 @@ export default function Register({setShowRegister}) {
   return (
     <div className='registerContainer'>
       <div className="logo"> 
-        <Room/> Travel Pin
+        <Room/> <h2>Travel and Review</h2>
       </div>
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder="username" ref={nameRef}/>
@@ -43,13 +46,19 @@ export default function Register({setShowRegister}) {
         <input type="password" placeholder="password" ref={passwordRef}/>
         <button className='registerBtn'>Register</button>
         {success && (
-          <span className='success'> Logged in!</span>
+          <div className='success'>You are registered!</div>
           )}
         {error && (
-        <span className='failure'> Opps Sorry</span>
+        <div className='failure'>Opps Sorry</div>
         )}
       </form>
       <Cancel className='registerCancel' onClick={() => setShowRegister(false)}/>
     </div>
   );
+}
+
+Register.propTypes = {
+  setShowRegister: PropTypes.func,
+  onSetCurrentUser: PropTypes.func,
+  loginTravelAppStorage: PropTypes.object
 }
