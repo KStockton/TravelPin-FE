@@ -31,7 +31,7 @@ Front End:
 
 BackEnd:
 
-Visit the ReadMe [here](https://github.com/KStockton/TravelPin-FE)
+Visit the ReadMe [here](https://github.com/KStockton/PinpointAPI)
 
 Express.js
 MongoDB / Mongoose
